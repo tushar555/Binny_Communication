@@ -1,0 +1,154 @@
+<ion-header>
+  <ion-navbar color="navbar" class="white-text">
+    <button ion-button menuToggle class="TopLMenu">
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title no-padding>
+      <ion-item style="background: transparent !important" no-lines no-padding>
+        <ion-avatar item-left>
+          <img src="https://michiganross.umich.edu/sites/default/files/images/profiles/koustav-de.jpg">
+        </ion-avatar>
+        <span *ngIf="user_type=='sales'" style="color:antiquewhite">{{client_name}}</span>
+        <span *ngIf="user_type=='client'" style="color:antiquewhite">{{data[0].sales_name}}</span>
+      </ion-item>
+    </ion-title>
+    <ion-buttons right>
+        <button color="light" ion-button icon-only (click)="picImage()">
+            <ion-icon ios="ios-attach" md="md-attach"></ion-icon>
+          </button>
+      <button color="light" ion-button icon-only (click)="sendImage()">
+        <ion-icon ios="ios-attach" md="md-attach"></ion-icon>
+      </button>
+      <button color="light" ion-button icon-only (click)="logout()">
+        <ion-icon ios="ios-log-out" md="md-log-out"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+<ion-content padding>
+
+
+
+
+
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <h4 *ngIf="chatPresent=='false'" style="text-align:center">No Conversation!</h4>
+
+  <div *ngIf="chatPresent=='true'">
+
+    <ion-list *ngFor="let msg of getChatData">
+      
+      <div *ngIf="storageEmail==msg.sender_email">
+        
+        <div *ngIf="msg.message!=''" (tap)="tapEve()" (press)="delete(msg.chatId)">
+          <!-- <b>{{msg.sender_email}}</b>: -->
+        
+              <div text-right class="bubble bubble--alt"  >
+                <span  [ngClass]="{'selectDlt' : (flag == 1 && msg.chatId == chatId)}">{{msg.message}} </span>
+              </div>
+          
+        </div>
+        <div *ngIf="msg.message==''">
+          <div text-right *ngIf="msg.path==''" class="bubble bubble--alt">
+            <img (click)="openImage(msg.imagename)" [src]='msg.original_path' height="90px;" width="90px;">
+          </div>
+          <span *ngIf="msg.path!=''">
+
+            <div text-right class="bubble bubble--alt">
+
+              <div class="centered" style="background-color:grey;padding:2%;border-radius:12px;color:#ccc" ><b>Download</b></div>
+
+              <img (click)="downloadImage(msg.path,msg.imagename,msg.id)" style=" opacity: 0.4;filter: alpha(opacity=50);" [src]='msg.path' height="90px;" width="90px;">
+            </div>
+            <!-- <span *ngIf="msg.status=='not_downloaded'" >
+              <ion-icon ios="ios-download" md="md-download"></ion-icon>                     
+            </span> -->
+          </span>
+        </div>
+      </div>
+      <div *ngIf="storageEmail!=msg.sender_email">
+       
+        <div *ngIf="msg.message!=''">
+
+            <div text-right class="bubble"  >
+                <span  [ngClass]="{'selectDlt' : (flag == 1 && msg.chatId == chatId)}">{{msg.message}} </span>
+            </div>
+        </div>
+        <div *ngIf="msg.message==''">
+
+          <span class="bubble" *ngIf="msg.path==''">
+              <img (click)="openImage(msg.imagename)" src='file:///storage/emulated/0/Download/{{msg.imagename}}' height="90px;" width="90px;"> 
+              <!-- <img (click)="openImage(msg.imagename)" src='https://www.walldevil.com/wallpapers/a92/beautiful-wallpapers-pcwallpapers-girlswallpapers-girls-girl-allimg-china.jpg' height="100%" width="100%">  -->
+          </span>
+          <span *ngIf="msg.path!=''">
+              <div class="centered" style="background-color:grey;padding:2%;border-radius:12px;color:#ccc" ><b>Download</b></div>
+              <img (click)="downloadImage(msg.path,msg.imagename,msg.id)" style=" opacity: 0.4;filter: alpha(opacity=50);" [src]='msg.path' height="90px;" width="90px;">
+            <!-- <span *ngIf="msg.status=='not_downloaded'" >
+              <ion-icon ios="ios-download" md="md-download"></ion-icon>
+            </span> -->
+          </span>
+        </div>
+      </div>
+
+    </ion-list>
+  </div>
+
+
+
+
+
+
+</ion-content>
+<!-- <ion-footer no-border no-padding>
+        <ion-toolbar   no-padding>
+            <button ion-button full  clear  icon-left  color="light" >
+              <ion-row no-padding>
+                <ion-col col-10>
+                   
+                        <ion-input placeholder="Start typing..." [(ngModel)]="message" clearInput style="color:#777"></ion-input>
+                      
+                      
+                </ion-col> 
+                <ion-col col-2>
+                    
+                        
+                            <ion-avatar item-left (click)="sendMessage(message)">
+                                    <img src="../assets/send.png">
+                            </ion-avatar>
+                     
+                     
+                  </ion-col>  
+              </ion-row> 
+             
+          </button>
+        </ion-toolbar>
+      </ion-footer> -->
+
+<ion-footer>
+  <ion-toolbar style="height: 50px;" color="nocolor">
+    <table border="0" width="100%" style="background: transparent;">
+      <tr>
+        <td width="80%">
+
+          <input [(ngModel)]="message" type="text" style="width: 100%; height: 40px; border-radius: 4px;display: inline-block;border: 1px solid #ccc;box-sizing: border-box;padding-left: 10px"
+            name="comment" placeholder="Type a message">
+
+        </td>
+        <td width="20%" align="center" valign="middle">
+          <table border="0" (click)="sendMessage(message)" width="45px" height="45px" style="background: #8A8A8A; border-radius: 50%;box-shadow: 0px 0px 5px 0px #ccc;">
+            <tr>
+              <td align="center" valign="middle">
+                <ion-icon name="md-send" style="font-size: 25px;color: #fff"></ion-icon>
+
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </ion-toolbar>
+</ion-footer>
+

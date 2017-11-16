@@ -1,0 +1,25 @@
+<ion-header no-border>
+    <!-- <ion-navbar>
+      <ion-title>Tip for you</ion-title>
+      <ion-buttons end>
+        <button ion-button icon-only>
+        <ion-icon name='bulb'></ion-icon>
+      </button>
+      </ion-buttons>
+    </ion-navbar> -->
+    <ion-buttons end tappable (click)="dismiss()" >
+       
+            <ion-icon style="font-size:30px;" ios="ios-close-circle" md="md-close-circle"></ion-icon>
+     
+        </ion-buttons>
+  
+  </ion-header>
+  <ion-content padding [ngStyle]="{'background-image': 'url(' + imageUrl +')','background-size': '100% 100%','background-repeat': 'no-repeat'}" >
+        
+  </ion-content>
+  <!-- <ion-footer>
+    <button ion-button full color="danger" (click)="dismiss()">Okay
+        </button>
+  </ion-footer> -->
+  
+  

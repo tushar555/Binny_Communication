@@ -1,17 +1,36 @@
 <ion-header>
-  <ion-navbar>
-    <ion-title>Home</ion-title>
+  <ion-navbar color="navbar" class="white-text">
+     <button ion-button menuToggle class="TopLMenu">
+      <ion-icon name="menu"></ion-icon>
+    </button>
+        <ion-title >New messages</ion-title>
+    <ion-buttons right>
+        <button color="light" ion-button icon-only (click)="logout()">
+                <ion-icon ios="ios-log-out" md="md-log-out"></ion-icon>
+        </button>
+    </ion-buttons> 
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-  <h2>Welcome to Ionic!</h2>
-  <p>
-    This starter project comes with simple tabs-based layout for apps
-    that are going to primarily use a Tabbed UI.
-  </p>
-  <p>
-    Take a look at the <code>src/pages/</code> directory to add or change tabs,
-    update any existing page or create new pages.
-  </p>
+<ion-content no-padding >
+
+    
+    <ion-list >
+    
+        <ion-item  *ngFor="let d of data" (click)="detail(d)">
+          <ion-avatar item-left>
+            <img [src]="d.imgProfile">
+          </ion-avatar>
+          <h2><b>{{d.client_name}}</b></h2>
+          <h3>Email: {{d.client_email}}</h3>
+          <!-- <p>body: {{message.messageBody}}</p> -->
+        </ion-item>
+     
+    </ion-list>
+
+    <!-- <ion-fab right bottom (click)="createMessage()">
+        <button ion-fab color="green"><ion-icon name="md-add" ></ion-icon></button>
+    </ion-fab>    -->
 </ion-content>
+
+
